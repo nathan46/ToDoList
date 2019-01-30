@@ -5,7 +5,7 @@ module TestHelper
     html = String.new
 
     liste.each do |line|
-      html += "<h2> #{line['text']} </h2>"
+      html += "#{line['text']}        "
     end
 
   end
