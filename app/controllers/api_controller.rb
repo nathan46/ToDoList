@@ -8,9 +8,19 @@ class ApiController < ApplicationController
 
   end
 
-  def all
+  def index
     li = listAll
     render json: li
+  end
+
+  def show
+    test = params[:id].split(',')
+    a = DB.exec("SELECT * FROM liste WHERE coche = #{test[0]}")
+    render json: a
+  end
+
+  def create
+
   end
 
   def one
@@ -26,4 +36,10 @@ class ApiController < ApplicationController
   def listAll
     DB.exec("SELECT * FROM liste")
   end
+
+  private
+
+def line_params
+  params.permit(:text, :coche)
+end
 end
