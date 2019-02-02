@@ -1,6 +1,7 @@
 require 'pg'
 
 class ApiController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   DB = PG.connect('ec2-23-21-171-25.compute-1.amazonaws.com','5432',nil,nil,'d7snv8turfs4ff','ohyxckuotpgwbl','ab939bfbfdd30e5a78e55a3250ee2dc07bc3c5aa05362939b1300c31a0be206a')
 
@@ -9,37 +10,40 @@ class ApiController < ApplicationController
   end
 
   def index
-    li = listAll
-    render json: li
+    lines = Line.order('id')
+    render json: lines
   end
 
   def show
-    test = params[:id].split(',')
-    a = DB.exec("SELECT * FROM liste WHERE coche = #{test[0]}")
-    render json: a
+    line = Line.find(params[:id])
+    render json: line
   end
 
   def create
+    line = Line.new(line_params)
 
+    if line.save
+      render json: line
+    end
   end
 
-  def one
-    li = listAll
-    render json: li[0]
+  def destroy
+    line = Line.find(params[:id])
+    line.destroy
   end
 
-  def two
-    li = listAll
-    render json: li[1]
+  def update
+    line = Line.find(params[:id])
+    if line.update_attributes(line_params)
+      render json: line
+    end
   end
 
-  def listAll
-    DB.exec("SELECT * FROM liste")
+
+  def line_params
+    params.permit(:text,:coche)
   end
 
-  private
+  private :line_params
 
-def line_params
-  params.permit(:text, :coche)
-end
 end
