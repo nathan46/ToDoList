@@ -15,8 +15,8 @@ class ApiController < ApplicationController
   end
 
   def show
-    line = Line.find(params[:id])
-    render json: line
+    lines = Line.where(coche: params[:id])
+    render json: lines
   end
 
   def create
