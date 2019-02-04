@@ -15,7 +15,7 @@ class ApiController < ApplicationController
   end
 
   def show
-    lines = Line.where(coche: params[:id])
+    lines = Line.where(coche: params[:id]).order('id DESC')
     render json: lines
   end
 
