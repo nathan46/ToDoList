@@ -23,7 +23,9 @@ class ApiController < ApplicationController
     line = Line.new(line_params)
 
     if line.save
-      render json: line
+      lines = Line.where(coche: "false")
+      render json: lines
+      ##render json: line
     end
   end
 
